@@ -3,7 +3,7 @@ import { Options }  from "./index";
 const API_KEY = process.env.API_KEY_WEATHER;
 const BASE_URL = process.env.BASE_URL;
 
-function UrlBuild(city:string , options: Options):string{
+function urlBuild(city:string , options: Options):string{
     let URL = BASE_URL + `/${city}`;
     if (options.date1 && options.date1.trim() != "") {
         URL += `/${options.date1.trim()}`;
@@ -15,7 +15,7 @@ function UrlBuild(city:string , options: Options):string{
     return URL;
 }
 
-function ErrorHandling(response: number) {
+function errorHandling(response: number) {
      switch (response) {
             case 400:
             case 404: 
@@ -31,13 +31,13 @@ export async function getWeather(city: string, options: Options) {
     let response: Response;
 
     try {
-        response = await fetch(UrlBuild(city, options));
+        response = await fetch(urlBuild(city, options));
     } catch {
         throw new Error("NETWORK_ERROR");
     }
 
     if (!response.ok) {
-        ErrorHandling(response.status);
+        errorHandling(response.status);
     }
 
     return response.json();
