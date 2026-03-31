@@ -1,4 +1,4 @@
-import { forecastContainer, forecastItem , CurrentConditions, Day } from "./types";
+import { forecastContainer, forecastItem, CurrentConditions, Day } from "./types";
 
 const errorBanner = document.getElementById("error-banner") as HTMLDivElement;
 const errorText = document.getElementById("error-text") as HTMLSpanElement;
