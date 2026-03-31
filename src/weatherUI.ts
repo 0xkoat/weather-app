@@ -1,4 +1,4 @@
-import { forecastContainer, forecastItem } from "./types";
+import { forecastContainer, forecastItem , CurrentConditions, Day, Hour } from "./types";
 
 const errorBanner = document.getElementById("error-banner") as HTMLDivElement;
 const errorText = document.getElementById("error-text") as HTMLSpanElement;
@@ -233,14 +233,14 @@ export function populateScroll(container: forecastContainer, items: forecastItem
   container.wrapper.classList.remove("hidden");
 }
 
-export function updateCurrentWeather(container: forecastContainer, data: any) {
+export function updateCurrentWeather(container: forecastContainer, data: CurrentConditions) {
     const currentItem: forecastItem = {
         label: data.conditions,
-        temp: data.temp,
-        feelsLike: data.feelslike,
-        humidity: data.humidity,
-        wind: data.windspeed,
-        precip: data.precipprob,
+        temp: data.temp.toString(),
+        feelsLike: data.feelslike.toString(),
+        humidity: data.humidity.toString(),
+        wind: data.windspeed.toString(),
+        precip: data.precipprob.toString(),
         sunrise: data.sunrise,
         sunset: data.sunset,
         icon: data.icon ? getIconURL(data.icon) : undefined
@@ -248,14 +248,14 @@ export function updateCurrentWeather(container: forecastContainer, data: any) {
     populateCurrent(container, currentItem);
 }
 
-export function updateDailyWeather(container: forecastContainer, days: any[] ){
-  const dailyItems: forecastItem[] = days.slice(0,  5).map(day => ({
+export function updateDailyWeather(container: forecastContainer, days: Day[]) {
+  const dailyItems: forecastItem[] = days.slice(0, 5).map(day => ({
     label: day.datetime,
-    temp: day.temp,
-    feelsLike: day.feelslike,
-    humidity: day.humidity,
-    wind: day.windspeed,
-    precip: day.precipprob || "0%",
+    temp: day.temp.toString(),
+    feelsLike: day.feelslike.toString(),
+    humidity: day.humidity.toString(),
+    wind: day.windspeed.toString(),
+    precip: day.precipprob.toString() || "0%",
     sunrise: day.sunrise,
     sunset: day.sunset,
     icon: day.icon ? getIconURL(day.icon) : undefined
@@ -263,38 +263,37 @@ export function updateDailyWeather(container: forecastContainer, days: any[] ){
   populateGrid(container, dailyItems);
 }
 
-export function updateHourlyWeather(container: forecastContainer, days: any[]) {
+export function updateHourlyWeather(container: forecastContainer, days: Day[]) {
   const hourlyItems: forecastItem[] = days.flatMap(day => day.hours ?? []).slice(0, 24).map(hour => ({
     label: hour.datetime,
-    temp: hour.temp,
-    feelsLike: hour.feelslike,
-    humidity: hour.humidity,
-    wind: hour.windspeed,
-    precip: hour.precipprob,
+    temp: hour.temp.toString(),
+    feelsLike: hour.feelslike.toString(),
+    humidity: hour.humidity.toString(),
+    wind: hour.windspeed.toString(),
+    precip: hour.precipprob.toString(),
     icon: hour.icon ? getIconURL(hour.icon) : undefined
   }));
   populateScroll(container, hourlyItems);
 }
 
-export function updateRangeWeather(container: forecastContainer, days: any[], date1?: string, date2?: string) {
+export function updateRangeWeather(container: forecastContainer, days: Day[], date1?: string, date2?: string) {
     if (!date1 || !date2) {
         container.wrapper.classList.add("hidden");
         return;
     }
 
-
-    const rangeItems: forecastItem[] = days
-        .map(day => ({
-            label: day.datetime,
-            temp: day.temp,
-            feelsLike: day.feelslike,
-            humidity: day.humidity,
-            wind: day.windspeed,
-            precip: day.precipprob,
-            sunrise: day.sunrise,
-            sunset: day.sunset,
-            icon: day.icon ? getIconURL(day.icon) : undefined
-  }));
+    const rangeItems: forecastItem[] = days.map(day => ({
+        label: day.datetime,
+        temp: day.temp.toString(),
+        feelsLike: day.feelslike.toString(),
+        humidity: day.humidity.toString(),
+        wind: day.windspeed.toString(),
+        precip: day.precipprob.toString(),
+        sunrise: day.sunrise,
+        sunset: day.sunset,
+        icon: day.icon ? getIconURL(day.icon) : undefined
+    }));
+    
     if (rangeItems.length > 0) {
         populateGrid(container, rangeItems);
     } else {

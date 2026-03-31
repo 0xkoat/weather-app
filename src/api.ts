@@ -1,4 +1,4 @@
-import { Options }  from "./types";
+import { Options , WeatherData }  from "./types";
 
 const API_KEY = process.env.API_KEY_WEATHER;
 const BASE_URL = process.env.BASE_URL;
@@ -40,7 +40,7 @@ export async function getWeather(city: string, options: Options) {
         errorHandling(response.status);
     }
 
-    return response.json();
+    return response.json() as Promise<WeatherData>;
 }
 
 
