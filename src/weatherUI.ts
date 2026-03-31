@@ -42,41 +42,191 @@ export function populateCurrent(container: forecastContainer, item: forecastItem
 }
 
 export function populateGrid(container: forecastContainer, items: forecastItem[]) {
-  container.content.innerHTML = "";
+  while (container.content.firstChild) {
+    container.content.removeChild(container.content.firstChild);
+  }
+  
   items.forEach(item => {
     const div = document.createElement("div");
     div.className = "flex flex-col items-center gap-2 bg-white/10 rounded-xl p-2 text-center text-sm";
-    div.innerHTML = `
-      ${item.label ? `<p class="font-medium">${item.label}</p>` : ""}
-      ${item.icon ? `<img src="${item.icon}" class="w-10 h-10 mx-auto">` : ""}
-      ${item.temp ? `<p>🌡 Temp: <span class="font-semibold">${item.temp}</span></p>` : ""}
-      ${item.feelsLike ? `<p>🤗 Feels: <span class="font-semibold">${item.feelsLike}</span></p>` : ""}
-      ${item.humidity ? `<p>💧 Humidity: <span class="font-semibold">${item.humidity}</span></p>` : ""}
-      ${item.wind ? `<p>💨 Wind: <span class="font-semibold">${item.wind}</span></p>` : ""}
-      ${item.precip ? `<p>🌧 Precip: <span class="font-semibold">${item.precip}</span></p>` : ""}
-      ${item.sunrise ? `<p>🌅 Sunrise: ${item.sunrise}</p>` : ""}
-      ${item.sunset ? `<p>🌇 Sunset: ${item.sunset}</p>` : ""}`;
+    
+    if (item.label) {
+      const label = document.createElement("p");
+      label.className = "font-medium";
+      label.textContent = item.label;
+      div.appendChild(label);
+    }
+    
+    if (item.icon) {
+      const img = document.createElement("img");
+      img.src = item.icon;
+      img.className = "w-10 h-10 mx-auto";
+      img.alt = item.label || "Weather icon";
+      div.appendChild(img);
+    }
+    
+    if (item.temp) {
+      const temp = document.createElement("p");
+      const tempText = document.createTextNode("🌡 Temp: ");
+      const tempSpan = document.createElement("span");
+      tempSpan.className = "font-semibold";
+      tempSpan.textContent = item.temp;
+      temp.appendChild(tempText);
+      temp.appendChild(tempSpan);
+      div.appendChild(temp);
+    }
+    
+    if (item.feelsLike) {
+      const feels = document.createElement("p");
+      const feelsText = document.createTextNode("🤗 Feels: ");
+      const feelsSpan = document.createElement("span");
+      feelsSpan.className = "font-semibold";
+      feelsSpan.textContent = item.feelsLike;
+      feels.appendChild(feelsText);
+      feels.appendChild(feelsSpan);
+      div.appendChild(feels);
+    }
+    
+    if (item.humidity) {
+      const humidity = document.createElement("p");
+      const humidityText = document.createTextNode("💧 Humidity: ");
+      const humiditySpan = document.createElement("span");
+      humiditySpan.className = "font-semibold";
+      humiditySpan.textContent = item.humidity;
+      humidity.appendChild(humidityText);
+      humidity.appendChild(humiditySpan);
+      div.appendChild(humidity);
+    }
+    
+    if (item.wind) {
+      const wind = document.createElement("p");
+      const windText = document.createTextNode("💨 Wind: ");
+      const windSpan = document.createElement("span");
+      windSpan.className = "font-semibold";
+      windSpan.textContent = item.wind;
+      wind.appendChild(windText);
+      wind.appendChild(windSpan);
+      div.appendChild(wind);
+    }
+    
+    if (item.precip) {
+      const precip = document.createElement("p");
+      const precipText = document.createTextNode("🌧 Precip: ");
+      const precipSpan = document.createElement("span");
+      precipSpan.className = "font-semibold";
+      precipSpan.textContent = item.precip;
+      precip.appendChild(precipText);
+      precip.appendChild(precipSpan);
+      div.appendChild(precip);
+    }
+    
+    if (item.sunrise) {
+      const sunrise = document.createElement("p");
+      const sunriseText = document.createTextNode("🌅 Sunrise: ");
+      const sunriseSpan = document.createElement("span");
+      sunriseSpan.className = "font-semibold";
+      sunriseSpan.textContent = item.sunrise;
+      sunrise.appendChild(sunriseText);
+      sunrise.appendChild(sunriseSpan);
+      div.appendChild(sunrise);
+    }
+    
+    if (item.sunset) {
+      const sunset = document.createElement("p");
+      const sunsetText = document.createTextNode("🌇 Sunset: ");
+      const sunsetSpan = document.createElement("span");
+      sunsetSpan.className = "font-semibold";
+      sunsetSpan.textContent = item.sunset;
+      sunset.appendChild(sunsetText);
+      sunset.appendChild(sunsetSpan);
+      div.appendChild(sunset);
+    }
+    
     container.content.appendChild(div);
   });
+  
   container.wrapper.classList.remove("hidden");
 }
 
 export function populateScroll(container: forecastContainer, items: forecastItem[]) {
   const scrollDiv = container.content as HTMLDivElement;
-  scrollDiv.innerHTML = "";
+  
+  while (scrollDiv.firstChild) {
+    scrollDiv.removeChild(scrollDiv.firstChild);
+  }
 
   items.forEach(item => {
     const div = document.createElement("div");
     div.className = "inline-block w-28 flex-shrink-0 bg-white/10 rounded-xl p-2 text-center text-sm flex flex-col items-center gap-2";
-    div.innerHTML = `
-      ${item.label ? `<p class="font-medium">${item.label}</p>` : ""}
-      ${item.icon ? `<img src="${item.icon}" class="w-10 h-10 mx-auto">` : ""}
-      ${item.temp ? `<p>🌡 ${item.temp}</p>` : ""}
-      ${item.feelsLike ? `<p>🤗 ${item.feelsLike}</p>` : ""}
-      ${item.humidity ? `<p>💧 ${item.humidity}</p>` : ""}
-      ${item.wind ? `<p>💨 ${item.wind}</p>` : ""}
-      ${item.precip ? `<p>🌧 ${item.precip}</p>` : `<p>🌧 0%</p>`}
-    `;
+    
+    if (item.label) {
+      const label = document.createElement("p");
+      label.className = "font-medium";
+      label.textContent = item.label;
+      div.appendChild(label);
+    }
+    
+    if (item.icon) {
+      const img = document.createElement("img");
+      img.src = item.icon;
+      img.className = "w-10 h-10 mx-auto";
+      img.alt = item.label || "Weather icon";
+      div.appendChild(img);
+    }
+    
+    if (item.temp) {
+      const temp = document.createElement("p");
+      const tempText = document.createTextNode("🌡 ");
+      const tempSpan = document.createElement("span");
+      tempSpan.className = "font-semibold";
+      tempSpan.textContent = item.temp;
+      temp.appendChild(tempText);
+      temp.appendChild(tempSpan);
+      div.appendChild(temp);
+    }
+    
+    if (item.feelsLike) {
+      const feels = document.createElement("p");
+      const feelsText = document.createTextNode("🤗 ");
+      const feelsSpan = document.createElement("span");
+      feelsSpan.className = "font-semibold";
+      feelsSpan.textContent = item.feelsLike;
+      feels.appendChild(feelsText);
+      feels.appendChild(feelsSpan);
+      div.appendChild(feels);
+    }
+    
+    if (item.humidity) {
+      const humidity = document.createElement("p");
+      const humidityText = document.createTextNode("💧 ");
+      const humiditySpan = document.createElement("span");
+      humiditySpan.className = "font-semibold";
+      humiditySpan.textContent = item.humidity;
+      humidity.appendChild(humidityText);
+      humidity.appendChild(humiditySpan);
+      div.appendChild(humidity);
+    }
+    
+    if (item.wind) {
+      const wind = document.createElement("p");
+      const windText = document.createTextNode("💨 ");
+      const windSpan = document.createElement("span");
+      windSpan.className = "font-semibold";
+      windSpan.textContent = item.wind;
+      wind.appendChild(windText);
+      wind.appendChild(windSpan);
+      div.appendChild(wind);
+    }
+    
+    const precip = document.createElement("p");
+    const precipText = document.createTextNode("🌧 ");
+    const precipSpan = document.createElement("span");
+    precipSpan.className = "font-semibold";
+    precipSpan.textContent = item.precip ? item.precip : "0%";
+    precip.appendChild(precipText);
+    precip.appendChild(precipSpan);
+    div.appendChild(precip);
+    
     scrollDiv.appendChild(div);
   });
 
