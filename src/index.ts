@@ -3,6 +3,7 @@ import { getWeather } from './api';
 import * as UI from './weatherUI';
 import * as Container from './containers';
 import * as  validator from 'validator';
+import { Options } from './types';
 
 const searchBtn = document.getElementById('search-btn') as HTMLButtonElement;
 const cityInput = document.getElementById('city-input') as HTMLInputElement;
@@ -18,12 +19,7 @@ let isLoading :boolean= false ;
 export let cachedData: any = null;
 
 
-export interface Options {
-    date1?: string;
-    date2?: string;
-    unitGroup: string;
-    lang: string;
-}
+
 
 export const options: Options = {
     unitGroup: unitSelect.value,

@@ -1,4 +1,4 @@
-import { Options }  from "./index";
+import { Options }  from "./types";
 
 const API_KEY = process.env.API_KEY_WEATHER;
 const BASE_URL = process.env.BASE_URL;

@@ -17,3 +17,10 @@ export type forecastItem = {
     icon?: string;
     [key: string]: any;
 }
+
+export interface Options {
+    date1?: string;
+    date2?: string;
+    unitGroup: string;
+    lang: string;
+}
