@@ -2,6 +2,7 @@ import { forecastContainer, forecastItem , CurrentConditions, Day } from "./type
 
 const errorBanner = document.getElementById("error-banner") as HTMLDivElement;
 const errorText = document.getElementById("error-text") as HTMLSpanElement;
+const loadingSpinner = document.getElementById("loading-spinner") as HTMLDivElement;
 
 export function showError(message: string) {
   errorText.textContent = message;
@@ -13,6 +14,14 @@ export function showError(message: string) {
 export function clearError() {
   errorBanner.classList.add("opacity-0", "pointer-events-none");
   errorBanner.classList.remove("opacity-100");
+}
+
+export function showLoading() {
+  loadingSpinner.classList.remove("hidden");
+}
+
+export function hideLoading() {
+  loadingSpinner.classList.add("hidden");
 }
 
 export function getIconURL(iconCode: string): string {

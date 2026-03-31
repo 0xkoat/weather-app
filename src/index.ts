@@ -3,7 +3,7 @@ import { getWeather } from './api';
 import * as UI from './weatherUI';
 import * as Container from './containers';
 import * as  validator from 'validator';
-import { Options } from './types';
+import { Options , WeatherData } from './types';
 
 const searchBtn = document.getElementById('search-btn') as HTMLButtonElement;
 const cityInput = document.getElementById('city-input') as HTMLInputElement;
@@ -16,11 +16,7 @@ const hours = document.getElementById("hourly-checkbox") as HTMLInputElement;
 const days = document.getElementById("daily-checkbox") as HTMLInputElement;
 
 let isLoading :boolean= false ;
-export let cachedData: any = null;
-
-
-
-
+export let cachedData: WeatherData | null = null;
 export const options: Options = {
     unitGroup: unitSelect.value,
     lang: langSelect.value,
@@ -82,6 +78,7 @@ async function fetchWeather() {
 
   isLoading = true;
   searchBtn.disabled = true;
+  UI.showLoading();
 
   try {
     cachedData = await getWeather(currentCity, options);
@@ -106,6 +103,7 @@ async function fetchWeather() {
   } finally {
     isLoading = false;
     searchBtn.disabled = false;
+    UI.hideLoading();
   }
 }
  
