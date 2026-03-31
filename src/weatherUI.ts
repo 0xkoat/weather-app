@@ -96,7 +96,6 @@ export function updateCurrentWeather(container: forecastContainer, data: any) {
         icon: data.icon ? getIconURL(data.icon) : undefined
     };
     populateCurrent(container, currentItem);
-    console.log("Icon URL:", getIconURL(data.icon));
 }
 
 export function updateDailyWeather(container: forecastContainer, days: any[] ){
