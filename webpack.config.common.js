@@ -1,21 +1,15 @@
-// webpack.config.js
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  mode: "development",
   entry: "./src/index.ts",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
-    },
-  resolve: { extensions: ['.ts', '.js'] },
-  devtool: "eval-source-map",
-  devServer: {
-    watchFiles: ["./src/index.html"],
   },
+  resolve: { extensions: ['.ts', '.js'] },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
@@ -31,11 +25,11 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
-          },
+      },
       {
-          test: /\.ts$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       }
     ],
   },
