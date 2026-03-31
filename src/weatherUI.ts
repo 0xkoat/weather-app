@@ -1,4 +1,4 @@
-import { forecastContainer, forecastItem , CurrentConditions, Day, Hour } from "./types";
+import { forecastContainer, forecastItem , CurrentConditions, Day } from "./types";
 
 const errorBanner = document.getElementById("error-banner") as HTMLDivElement;
 const errorText = document.getElementById("error-text") as HTMLSpanElement;
@@ -281,8 +281,11 @@ export function updateRangeWeather(container: forecastContainer, days: Day[], da
         container.wrapper.classList.add("hidden");
         return;
     }
+    const filteredDays = days.filter(day => {
+        return day.datetime >= date1 && day.datetime <= date2;
+    });
 
-    const rangeItems: forecastItem[] = days.map(day => ({
+    const rangeItems: forecastItem[] = filteredDays.map(day => ({
         label: day.datetime,
         temp: day.temp.toString(),
         feelsLike: day.feelslike.toString(),
@@ -297,7 +300,14 @@ export function updateRangeWeather(container: forecastContainer, days: Day[], da
     if (rangeItems.length > 0) {
         populateGrid(container, rangeItems);
     } else {
-        container.wrapper.classList.add("hidden");
+        while (container.content.firstChild) {
+            container.content.removeChild(container.content.firstChild);
+        }
+        const message = document.createElement("p");
+        message.className = "text-center col-span-full";
+        message.textContent = "No weather data available for this date range";
+        container.content.appendChild(message);
+        container.wrapper.classList.remove("hidden");
     }
 }
 
