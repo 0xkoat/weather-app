@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-sky-400 via-blue-500 to-cyan-600 text-white flex flex-col items-center p-6 space-y-10">
+
+  <!-- ERROR BANNER -->
+  <div id="error-banner" class="error-banner fixed top-6 left-1/2 -translate-x-1/2 bg-red-500/90 backdrop-blur-md text-white px-6 py-4 rounded-2xl shadow-2xl border border-red-300/40 flex items-center gap-4 opacity-0 pointer-events-none transition-all duration-300 z-50">
+    <span id="error-text" class="font-medium"></span>
+    <button id="error-close" class="text-white/80 hover:text-white transition text-lg">✕</button>
+  </div>
+
+  <!--  SEARCH  -->
+  <div class="relative flex items-center w-full max-w-md bg-white/20 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 focus-within:ring-2 ring-white/60 transition">
+    <span class="pl-4 text-xl">📍</span>
+    <input type="text" id="city-input" placeholder="Search city..." class="w-full bg-transparent py-4 px-3 placeholder-white/70 focus:outline-none">
+    <button id="search-btn" class="bg-white/30 hover:bg-white/40 px-6 py-4 rounded-r-2xl transition active:scale-95">🔍</button>
+  </div>
+
+  <!-- LOADING SPINNER -->
+<div id="loading-spinner" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+  <div class="bg-white/20 backdrop-blur-xl rounded-2xl p-8 flex flex-col items-center gap-4">
+    <div class="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+    <p class="text-white font-medium">Loading weather data...</p>
+  </div>
+</div>
+
+  <!--  SETTINGS PANEL -->
+  <div class="w-full max-w-4xl bg-white/15 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-6 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Units -->
+      <div class="flex flex-col">
+        <label class="mb-2 font-medium">Units</label>
+        <select id="unit-select" class="bg-white/20 rounded-xl p-2 border text-black border-white/30 focus:outline-none">
+          <option value="metric" selected>Metric (°C, km/h)</option>
+          <option value="us">US (°F, mph)</option>
+          <option value="uk">UK (°C, mph)</option>
+        </select>
+      </div>
+      <!-- Language -->
+      <div class="flex flex-col">
+        <label class="mb-2 font-medium">Language</label>
+        <select id="lang-select" class="bg-white/20 rounded-xl p-2 border text-black border-white/30 focus:outline-none">
+          <option value="en" selected>English</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="pt">Português</option>
+          <option value="ar">العربية</option>
+        </select>
+      </div>
+      <!-- Date Range -->
+      <div class="flex flex-col gap-3">
+        <label class="font-medium">Date Range (max 30 days)</label>
+        <input type="date" id="start-date" class="bg-white/20 rounded-xl p-2 border border-white/30 focus:outline-none">
+        <input type="date" id="end-date" class="bg-white/20 rounded-xl p-2 border border-white/30 focus:outline-none">
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="flex gap-8 justify-center pt-4">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" id="hourly-checkbox" class="accent-sky-300 w-4 h-4">
+        <span>Hourly Forecast</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" id="daily-checkbox" class="accent-sky-300 w-4 h-4">
+        <span>Daily Forecast</span>
+      </label>
+    </div>
+  </div>
+
+  <!--  CURRENT WEATHER -->
+<div id="current-weather" class="forecast-container w-full max-w-4xl bg-white/15 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 space-y-6">
+  <h2 class="forecast-header text-2xl font-semibold text-center mb-6">Current Weather</h2>
+
+  <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+    <!-- LEFT SECTION (ICON + CONDITION) -->
+    <div class="flex flex-col items-center gap-4 min-w-[140px]">
+      
+      <!-- ICON -->
+      <div id="current-icon-wrapper" class="w-28 h-28 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-lg border border-white/30 hidden">
+        <img id="current-icon" src="" alt="Weather icon" class="w-20 h-20 object-contain"/>
+      </div>
+      <!-- CONDITION TEXT -->
+      <p id="current-condition" class="text-lg font-medium text-center">Current Condition</p>
+
+    </div>
+
+    <!-- TEMPERATURE -->
+    <div class="space-y-2 text-lg">
+      <p>🌡 Temp: <span id="current-temp" class="font-semibold"></span></p>
+      <p>🤗 Feels Like: <span id="current-feels" class="font-semibold"></span></p>
+    </div>
+
+    <!-- ATMOSPHERIC -->
+    <div class="space-y-2 text-lg">
+      <p>💧 Humidity: <span id="current-humidity" class="font-semibold"></span></p>
+      <p>💨 Wind Speed: <span id="current-wind" class="font-semibold"></span></p>
+      <p>🌧 Precip Prob: <span id="current-precip" class="font-semibold"></span></p>
+    </div>
+
+    <!-- SUN -->
+    <div class="space-y-2 text-lg">
+      <p>🌅 Sunrise: <span id="current-sunrise" class="font-semibold"></span></p>
+      <p>🌇 Sunset: <span id="current-sunset" class="font-semibold"></span></p>
+    </div>
+
+  </div>
+</div>
+
+  <!--  DAILY FORECAST  -->
+  <div id="daily-weather" class="forecast-container hidden">
+    <h2 class="forecast-header text-2xl font-semibold text-center mb-6">5-Day Forecast</h2>
+    <div id="daily-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"></div>
+  </div>
+
+  <!-- HOURLY FORECAST -->
+    <div id="hourly-weather" class="forecast-container hidden w-full max-w-6xl bg-white/15 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-4">
+        <h2 class="forecast-header text-2xl font-semibold text-center mb-4">Hourly Forecast</h2>
+
+        <!-- Scroll container -->
+        <div id="hourly-container" 
+            class="flex gap-4 overflow-x-auto whitespace-nowrap pb-2 -mx-2 px-2">
+            <!-- Hourly items injected here -->
+        </div>
+    </div>
+  <!--  DATE RANGE FORECAST -->
+  <div id="range-weather" class="forecast-container hidden">
+    <h2 class="forecast-header text-2xl font-semibold text-center mb-6">Date Range Forecast</h2>
+    <div id="range-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"></div>
+  </div>
+
+</body>
+</html>
