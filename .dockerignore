@@ -4,3 +4,4 @@ dist/
 *:Zone.Identifier
 README.md 
 .gitignore
+.github
