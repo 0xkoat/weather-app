@@ -1,0 +1,35 @@
+name: Manual Deployment to Server
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Image tag to deploy (default: latest)"
+        required: false
+        default: "latest"
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_REPO: koated/weather_app
+
+    steps:
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          script: |
+            TAG="${{ github.event.inputs.tag }}"
+            if [ -z "$TAG" ]; then TAG="latest"; fi
+            docker pull ${{ env.DOCKER_REPO }}:$TAG
+            docker stop weather_app_koat || true
+            docker rm weather_app_koat || true
+            docker run -d --name weather_app_koat -p 80:80 --restart unless-stopped ${{ env.DOCKER_REPO }}:$TAG
+            docker image prune -f
