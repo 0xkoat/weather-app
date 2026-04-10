@@ -33,6 +33,11 @@ jobs:
           API_KEY_WEATHER: ${{ secrets.API_KEY_WEATHER }}
           BASE_URL: ${{ secrets.BASE_URL }}
 
+      - name: Copy assets to dist
+        run: |
+          mkdir -p dist/assets
+          cp -r public/assets/* dist/assets/
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
