@@ -25,7 +25,7 @@ export function hideLoading() {
 }
 
 export function getIconURL(iconCode: string): string {
-  return `assets/icons/visualcrossing-color/${iconCode}.png`;
+  return `./assets/icons/visualcrossing-color/${iconCode}.png`;
 }
 
 export function populateCurrent(container: forecastContainer, item: forecastItem) {
