@@ -27,7 +27,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization=Koat
+            -Dsonar.organization=0xkoat
             -Dsonar.projectKey=0xkoat_Weather-app
 
       - name: Log in to Docker Hub
